@@ -5,7 +5,7 @@ Flickr Public Feed Client [![Build Status](https://travis-ci.org/ColorfullyMe/fl
 Let's see, how do you feel about potatos... and/or... today? You can use this app to find out or just for fun. Works direct in the browser and delivers public content from Flickr.
 
 ### How to use it?
-- There is a demo [here](). But please, do not abuse it! This link is hits limited and just to see what this app is all about.
+- There is a demo [here](https://rawgit.com/ColorfullyMe/flickr-potato/master/dist/index.html). But please, do not abuse it! This link is hits limited and just to see what this app is all about.
 - Clone or download this repo. Put the content inside some folder of your webserver and go to: `yourwebserver.com/the-path-copied-to/dist`
 - If you know what you are doing type `[sudo] gulp serve` in the CLI and point a browser to `localhost:8000`
 
@@ -18,7 +18,7 @@ The tasks you probably want to run:
 2. `[sudo] gulp serve` - will start a webserver listening on `localhost:8000` and serve the app (remember to build it first).
 3. `[sudo] gulp docs` - will build the docs into the `./docs` folder.
 
-Anotated source code is [here]().
+Anotated source code is [here](https://rawgit.com/ColorfullyMe/flickr-potato/master/dist/docs/code/app.html).
 
 ### License
 MIT
