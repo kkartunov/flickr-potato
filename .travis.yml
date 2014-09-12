@@ -8,4 +8,4 @@ before_script:
 - npm install gulp -g
 - phantomjs --version; casperjs --version
 
-script: gulp test
+script: gulp tests
