@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+  <title>Application flApp</title>
+  <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+  <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0; maximum-scale=1.0; user-scalable=0;">
+  <link rel="stylesheet" media="all" href="docco.css" />
+</head>
+<body>
+  <div id="container">
+    <div id="background"></div>
+
+    <ul class="sections">
+
+
+
+        <li id="section-1">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-1">&#182;</a>
+              </div>
+              <h1 id="application-flapp">Application flApp</h1>
+<p><em><strong> Potato test app consuming flickr api service. </strong></em></p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre><span class="hljs-keyword">var</span> flApp = angular.module(<span class="hljs-string">'flApp'</span>, [<span class="hljs-string">'ui.router'</span>, <span class="hljs-string">'angular-loading-bar'</span>]);</pre></div></div>
+
+        </li>
+
+
+        <li id="section-2">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-2">&#182;</a>
+              </div>
+              <p>Start the app when DOM ready…</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>angular.element(<span class="hljs-built_in">document</span>).ready(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{
+    angular.bootstrap(<span class="hljs-built_in">document</span>, [<span class="hljs-string">'flApp'</span>]);
+});</pre></div></div>
+
+        </li>
+
+
+        <li id="section-3">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-3">&#182;</a>
+              </div>
+              <h2 id="configuration">Configuration</h2>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>flApp.config([<span class="hljs-string">'$stateProvider'</span>, <span class="hljs-string">'$urlRouterProvider'</span>,
+    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($stateProvider, $urlRouterProvider)</span> </span>{</pre></div></div>
+
+        </li>
+
+
+        <li id="section-4">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-4">&#182;</a>
+              </div>
+              <p>Not found route redirection.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>        $urlRouterProvider.otherwise(<span class="hljs-string">'/'</span>);</pre></div></div>
+
+        </li>
+
+
+        <li id="section-5">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-5">&#182;</a>
+              </div>
+              <h3 id="home-route">Home route</h3>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>        $stateProvider.state(<span class="hljs-string">'home'</span>, {
+            url: <span class="hljs-string">'/'</span>,
+            templateUrl: <span class="hljs-string">'templates/feed.html'</span>,
+            resolve: {
+                Flickr: [<span class="hljs-string">'$http'</span>, <span class="hljs-string">'$cacheFactory'</span>,
+                    <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($http, $cacheFactory)</span> </span>{</pre></div></div>
+
+        </li>
+
+
+        <li id="section-6">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-6">&#182;</a>
+              </div>
+              <p>Init the app cache.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                        <span class="hljs-keyword">var</span> cache = $cacheFactory.get(<span class="hljs-string">'flApp'</span>) || $cacheFactory(<span class="hljs-string">'flApp'</span>);</pre></div></div>
+
+        </li>
+
+
+        <li id="section-7">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-7">&#182;</a>
+              </div>
+              <p>Resolve either with data from the cache
+or with data from the API.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                        <span class="hljs-keyword">return</span> cache.get(<span class="hljs-string">'last_rsp'</span>) || $http.jsonp(<span class="hljs-string">'//api.flickr.com/services/feeds/photos_public.gne?tags=potato&amp;tagmode=all&amp;format=json&amp;jsoncallback=JSON_CALLBACK'</span>).then(
+                            <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{
+                                cache.put(<span class="hljs-string">'last_rsp'</span>, data);
+                                cache.put(<span class="hljs-string">'tags'</span>, <span class="hljs-string">'potato'</span>);
+                                cache.put(<span class="hljs-string">'mode'</span>, <span class="hljs-string">'ALL'</span>);
+                                <span class="hljs-keyword">return</span> data;
+                            }
+                        );
+                }]
+            },</pre></div></div>
+
+        </li>
+
+
+        <li id="section-8">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-8">&#182;</a>
+              </div>
+              <h4 id="the-controller">The controller</h4>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>            controller: [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$state'</span>, <span class="hljs-string">'$http'</span>, <span class="hljs-string">'$cacheFactory'</span>, <span class="hljs-string">'cfpLoadingBar'</span>, <span class="hljs-string">'Flickr'</span>,
+                <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $state, $http, $cacheFactory, cfpLoadingBar, Flickr)</span> </span>{</pre></div></div>
+
+        </li>
+
+
+        <li id="section-9">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-9">&#182;</a>
+              </div>
+              <p>We will make use of the cache created earlier.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    <span class="hljs-keyword">var</span> cache = $cacheFactory.get(<span class="hljs-string">'flApp'</span>);</pre></div></div>
+
+        </li>
+
+
+        <li id="section-10">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-10">&#182;</a>
+              </div>
+              <p>Put GUI related vars on <code>$scope</code> and monitor
+for changes when needed.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    $scope.filterTags = cache.get(<span class="hljs-string">'tags'</span>);
+                    $scope.$watch(<span class="hljs-string">'filterTags'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nV, oV)</span> </span>{
+                        cache.put(<span class="hljs-string">'tags'</span>, nV);
+                    });
+                    $scope.filterModes = [<span class="hljs-string">'ALL'</span>, <span class="hljs-string">'ANY'</span>];
+                    $scope.filterMode = cache.get(<span class="hljs-string">'mode'</span>);
+                    $scope.$watch(<span class="hljs-string">'filterMode'</span>, <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(nV, oV)</span> </span>{
+                        cache.put(<span class="hljs-string">'mode'</span>, nV);
+                    });
+                    $scope.Flickr = Flickr.data;</pre></div></div>
+
+        </li>
+
+
+        <li id="section-11">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-11">&#182;</a>
+              </div>
+              <p>Invoked when the user clicks the <code>Filter</code> button.
+Updates the <code>$scope.Flickr</code> variable when new data was received
+from the Flick API.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    $scope.filterFeed = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">()</span> </span>{</pre></div></div>
+
+        </li>
+
+
+        <li id="section-12">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-12">&#182;</a>
+              </div>
+              <p>Init and show the loader bar.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                        cfpLoadingBar.start();</pre></div></div>
+
+        </li>
+
+
+        <li id="section-13">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-13">&#182;</a>
+              </div>
+              <p>Make the request.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                        $http
+                            .jsonp(<span class="hljs-string">'//api.flickr.com/services/feeds/photos_public.gne?tags='</span> + <span class="hljs-built_in">encodeURIComponent</span>($scope.filterTags) + <span class="hljs-string">'&amp;tagmode='</span> + $scope.filterMode + <span class="hljs-string">'&amp;format=json&amp;jsoncallback=JSON_CALLBACK'</span>)
+                            .then(
+                                <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(data)</span> </span>{</pre></div></div>
+
+        </li>
+
+
+        <li id="section-14">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-14">&#182;</a>
+              </div>
+              <p>Put on <code>$scope</code>.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                                    $scope.Flickr = data.data;</pre></div></div>
+
+        </li>
+
+
+        <li id="section-15">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-15">&#182;</a>
+              </div>
+              <p>Put in cache.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                                    cache.put(<span class="hljs-string">'last_rsp'</span>, data);</pre></div></div>
+
+        </li>
+
+
+        <li id="section-16">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-16">&#182;</a>
+              </div>
+              <p>Hide the loader bar.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                                    cfpLoadingBar.complete();
+                                }
+                        )
+                    };</pre></div></div>
+
+        </li>
+
+
+        <li id="section-17">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-17">&#182;</a>
+              </div>
+              <p>Tags input enter keypress handler.
+Just a shortcut to the <code>filterFeed</code> function.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    $scope.updateOnEnter = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(e)</span> </span>{
+                        <span class="hljs-keyword">if</span> (e.which == <span class="hljs-number">13</span>)
+                            $scope.filterFeed();
+                    };</pre></div></div>
+
+        </li>
+
+
+        <li id="section-18">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-18">&#182;</a>
+              </div>
+              <p>Click on tag handler
+to query the API for it and update the results.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    $scope.queryTag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tag)</span> </span>{
+                        $scope.filterTags = tag;
+                        $scope.filterFeed();
+                    };</pre></div></div>
+
+        </li>
+
+
+        <li id="section-19">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-19">&#182;</a>
+              </div>
+              <p>Helper to check if some tag is present
+in the <code>filterTags</code> input.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    $scope.isMatchedTag = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(tag)</span> </span>{
+                        <span class="hljs-keyword">return</span> $scope.filterTags.split(<span class="hljs-string">','</span>).map(<span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(v)</span> </span>{
+                            <span class="hljs-keyword">return</span> v.trim();
+                        }).indexOf(tag) != -<span class="hljs-number">1</span>;
+                    };
+            }]
+        });</pre></div></div>
+
+        </li>
+
+
+        <li id="section-20">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-20">&#182;</a>
+              </div>
+              <h3 id="detail-route">Detail route</h3>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>        $stateProvider.state(<span class="hljs-string">'detail'</span>, {
+            url: <span class="hljs-string">'/detail/:item'</span>,
+            templateUrl: <span class="hljs-string">'templates/detail.html'</span>,</pre></div></div>
+
+        </li>
+
+
+        <li id="section-21">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-21">&#182;</a>
+              </div>
+              <h4 id="the-controler">The controler</h4>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>            controller: [<span class="hljs-string">'$scope'</span>, <span class="hljs-string">'$stateParams'</span>,
+                <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">($scope, $stateParams)</span> </span>{
+
+                    $scope.item = $stateParams.item;</pre></div></div>
+
+        </li>
+
+
+        <li id="section-22">
+            <div class="annotation">
+
+              <div class="pilwrap ">
+                <a class="pilcrow" href="#section-22">&#182;</a>
+              </div>
+              <p>The <code>description</code> field in the Flickr API response is a mix of text and HTML
+so we need to extract only the text and use it for the detail view.</p>
+
+            </div>
+
+            <div class="content"><div class='highlight'><pre>                    $scope.parseDesc = <span class="hljs-function"><span class="hljs-keyword">function</span> <span class="hljs-params">(desc)</span> </span>{
+                        <span class="hljs-keyword">return</span> angular.element(<span class="hljs-string">'&lt;div&gt;'</span> + desc + <span class="hljs-string">'&lt;/div&gt;'</span>).text();
+                    };
+            }]
+        });
+    }]);</pre></div></div>
+
+        </li>
+
+    </ul>
+  </div>
+</body>
+</html>

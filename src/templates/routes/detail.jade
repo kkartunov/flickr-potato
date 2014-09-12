@@ -1,0 +1,21 @@
+.panel.panel-default.detail-view
+ .panel-heading
+  h3
+   a(target='_blank' href='{{item.link}}') {{item.title}}
+   a.btn.btn-default.pull-right(ui-sref='home') Back
+  p
+   a(target='_blank' href='//flickr.com/people/{{item.author_id}}/') Post author
+   |&nbsp;| {{item.published | date:"d MMM yyyy 'at' H:mm"}}
+ .panel-body
+  .row
+   .col-xs-12.col-md-4
+    img.img-responsive.thumbnail(src='{{item.media.m}}')
+   .col-xs-12.col-md-8
+    .row
+     .col-xs-12
+      blockquote
+       p {{parseDesc(item.description)}}
+       footer Flickr
+      p Tags:
+      p.the_tags
+       span.badge(ng-repeat="tag in item.tags.split(' ')") {{tag}}

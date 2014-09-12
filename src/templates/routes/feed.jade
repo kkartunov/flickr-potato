@@ -1,0 +1,39 @@
+.panel.panel-default
+ .panel-body
+  form.form-inline(role='form')
+   .form-group
+    .input-group
+     .input-group-addon Tags
+     input.form-control(type='text', ng-model='filterTags', ng-keypress='updateOnEnter($event)' size='50' placeholder='Comma delimited list of tags to filter the feed by...')
+   .form-group
+    select.form-control(ng-model='filterMode', ng-options='value as value for value in filterModes')
+   .form-group
+    button.btn.btn-primary(type='button' ng-disabled="!filterTags" ng-click='filterFeed()') Go
+ol.breadcrumb
+ li(style='word-break: break-all') {{Flickr.title}}
+ li
+  span.badge {{Flickr.items.length}}
+.panel.panel-default.feed-item(ng-repeat='item in Flickr.items', style='animation-delay: {{20*$index}}ms;-webkit-animation-delay: {{20*$index}}ms')
+ .panel-body
+  .row
+   .col-xs-12.col-md-4
+    a.thumbnail.pull-left(href='#', ui-sref='detail({"item":item})')
+     img.img-responsive(src='{{item.media.m}}')
+   .col-xs-12.col-md-8
+    .row
+     .col-xs-12
+      h3
+       a(href='#', ui-sref='detail({"item":item})') {{item.title}}
+    .row
+     .col-md-4
+      a(target='_blank' href='//flickr.com/people/{{item.author_id}}/') Post author
+     .col-xs-12.col-md-4
+      p {{item.published | date:"d MMM yyyy 'at' H:mm"}}
+     .col-md-4
+      a(target='_blank' href='{{item.link}}') View on Flickr
+    .row
+     .col-xs-12
+      p Tags:
+      p.the_tags
+       span(ng-repeat="tag in item.tags.split(' ')")
+        span.badge(ng-class="{'matchedTag':isMatchedTag(tag)}", ng-click='queryTag(tag)') {{tag}}

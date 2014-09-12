@@ -1,0 +1,19 @@
+doctype html
+html
+  include ./partials/head.jade
+  body(ng-cloak)
+   .container
+    .page-header
+     h1 Flickr Public Feed&nbsp;
+      small=pkg.version
+     em.text-info Just a potato web app :)
+    .row-fluid
+     ui-view
+      p.text-info Loading data...
+      .progress
+       .progress-bar.progress-bar-striped.active(role='progressbar', aria-valuenow='45', aria-valuemin='0', aria-valuemax='100', style='width: 45%;')
+    p
+     | Made by&nbsp;
+     a(href='https://github.com/ColorfullyMe', target='_blank') @ColorfullyMe
+     | , 2014.
+   include ./partials/foot.jade

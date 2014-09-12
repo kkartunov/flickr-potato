@@ -1,0 +1,64 @@
+.the_tags {
+    .badge {
+        opacity: 0.5;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        &:hover {
+            transition: all 0.3s ease;
+            opacity: 1;
+        }
+        &.matchedTag {
+            opacity: 1;
+        }
+    }
+}
+.feed-item {
+    animation: income 0.3s ease-in;
+    @keyframes income {
+        from {
+            transform: scaleY(0);
+            opacity: 0;
+        }
+        to {
+            transform: scaleY(1);
+            opacity: 1;
+        }
+    }
+    &:hover {
+        background-color: #f7f7f7;
+        transition: all 0.3s ease;
+    }
+}
+.detail-view{
+    animation: bounceInLeft 1s;
+    @keyframes bounceInLeft {
+      0%, 60%, 75%, 90%, 100% {
+        transition-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+      }
+
+      0% {
+        opacity: 0;
+        transform: translate3d(-3000px, 0, 0);
+      }
+
+      60% {
+        opacity: 1;
+        transform: translate3d(25px, 0, 0);
+      }
+
+      75% {
+        transform: translate3d(-10px, 0, 0);
+      }
+
+      90% {
+        transform: translate3d(5px, 0, 0);
+      }
+
+      100% {
+        transform: none;
+      }
+    }
+    .badge{
+        cursor: default;
+    }
+}
