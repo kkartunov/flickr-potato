@@ -11,7 +11,7 @@ var pkg = require('./package.json'),
     jade = require('gulp-jade'),
     uglify = require('gulp-uglify'),
     docco = require('gulp-docco'),
-
+    spawn = require('child_process').spawn,
     say_something = function (event) {
         gutil.log('Changed:' + event.path);
     },
@@ -116,8 +116,9 @@ gulp.task('docs', function () {
 
 // Serve it.
 gulp.task('serve', function () {
-    gulp.src('./dist/')
+    webserver_streem = gulp.src('./dist/')
         .pipe(webserver());
+    return webserver_streem;
 });
 
 
@@ -125,4 +126,15 @@ gulp.task('serve', function () {
 gulp.task('default', ['clean', 'vendors', 'jade', 'css', 'js']);
 gulp.task('clean', function () {
     del.sync('./dist');
+});
+
+gulp.task('tests', ['serve'], function () {
+    var tests = ['./tests/test.js'],
+        casper = spawn('casperjs', ['test'].concat(tests), {
+            stdio: 'inherit'
+        });
+    casper.on('exit', function () {
+        gutil.log('Tesing done!');
+        webserver_streem.emit('kill');
+    });
 });

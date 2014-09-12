@@ -1,0 +1,11 @@
+language: node_js
+
+node_js:
+- 0.10
+
+before_script:
+- sudo npm install casperjs -g
+- sudo npm install gulp -g
+- phantomjs --version; casperjs --version
+
+script: sudo gulp test

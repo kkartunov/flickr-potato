@@ -1,4 +1,4 @@
-Flickr Public Feed Client
+Flickr Public Feed Client [![Build Status](https://travis-ci.org/ColorfullyMe/flickr-potato.svg)](https://travis-ci.org/ColorfullyMe/flickr-potato)
 ====
 *Just a potato web app :)*
 
